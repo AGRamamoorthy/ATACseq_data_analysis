@@ -64,25 +64,25 @@ for condition in "\${!samples_by_condition[@]}"; do
 
     # FastQC for samples under the current condition
     for sampleID in \$sampleIDs; do
-        ${FASTQC} ${rawData}/\${sampleID}_R1.fastq.gz -o ${Data}
-        ${FASTQC} ${rawData}/\${sampleID}_R2.fastq.gz -o ${Data}
+        ${FASTQC} ${rawData}/\${sampleID}_1.fastq.gz -o ${Data}
+        ${FASTQC} ${rawData}/\${sampleID}_2.fastq.gz -o ${Data}
     # done
 
     # Trimming for samples under the current condition
     # for sampleID in \$sampleIDs; do
-        ${TRIM} ${rawData}/\${sampleID}_R1.fastq.gz ${rawData}/\${sampleID}_R2.fastq.gz -o ${TEMP}
+        ${TRIM} ${rawData}/\${sampleID}_1.fastq.gz ${rawData}/\${sampleID}_2.fastq.gz -o ${TEMP}
     # done
 
     # FastQC after trimming
     # for sampleID in \$sampleIDs; do
-        ${FASTQC} ${TEMP}/\${sampleID}_R1_val_1.fq.gz -o ${Data}
-        ${FASTQC} ${TEMP}/\${sampleID}_R2_val_2.fq.gz -o ${Data}
+        ${FASTQC} ${TEMP}/\${sampleID}_1_val_1.fq.gz -o ${Data}
+        ${FASTQC} ${TEMP}/\${sampleID}_2_val_2.fq.gz -o ${Data}
     # done
 
     # Mapping for samples under the current condition
     # for sampleID in \$sampleIDs; do
         bam_file="${Data}/\${condition}_rep\${replicate_num}.bam"
-        ${MAP} -x ${genomeDir}/mm10_bt2 -1 ${TEMP}/\${sampleID}_R1_val_1.fq.gz -2 ${TEMP}/\${sampleID}_R2_val_2.fq.gz \
+        ${MAP} -x ${genomeDir}/mm10_bt2 -1 ${TEMP}/\${sampleID}_1_val_1.fq.gz -2 ${TEMP}/\${sampleID}_2_val_2.fq.gz \
             | ${SAMVIEW} -bS - > "\$bam_file"
     # done
 
